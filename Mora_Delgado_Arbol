@@ -1,0 +1,60 @@
+package com.example.aplicacin1;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.os.Bundle;
+import android.view.ContextThemeWrapper;
+import android.view.View;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(new vista((this)));
+    }
+
+    public class vista extends View {
+
+        private Double sx = 1.0, sy = 1.0;
+
+        public vista (Context context){
+            super(context);
+        }
+
+        protected void onDraw(Canvas canvas){
+
+            Paint p = new Paint();
+            p.setColor(Color.BLACK);
+            p.setStrokeWidth(8);
+            p.setStyle(Paint.Style.FILL);
+            canvas.drawRect(0,0,canvas.getWidth(),canvas.getHeight(),p);
+            Dibujar(canvas,canvas.getWidth()/2,canvas.getHeight(),-90,6,150);
+
+        }
+
+        private void Dibujar(Canvas canvas, int x1, int y1, double angle, int profundity, int tamano) {
+            if (profundity == 0) {
+                return;
+            }
+            Paint pincel = new Paint();
+            pincel.setColor(Color.GREEN);
+            pincel.setStrokeWidth(8);
+            pincel.setStyle(Paint.Style.FILL);
+
+            int x2 = x1 + (int) (Math.cos(Math.toRadians(angle)) * tamano * sx);
+            int y2 = y1 + (int) (Math.sin(Math.toRadians(angle)) * tamano * sy);
+            canvas.drawLine(x1, y1, x2, y2,pincel);
+            Dibujar(canvas, x2, y2, angle - 20, profundity - 1, (int) (tamano * .9));
+            Dibujar(canvas, x2, y2, angle + 20, profundity - 1, (int) (tamano * .9));
+            Dibujar(canvas, x2, y2, angle - 40, profundity - 1, (int) (tamano * .9));
+            Dibujar(canvas, x2, y2, angle + 40, profundity - 1, (int) (tamano * .9));
+        }
+
+
+    }
+}
